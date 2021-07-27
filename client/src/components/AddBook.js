@@ -7,7 +7,7 @@ const intialState = {
     genre:null,
     author:null
 }
-const AddBook = ({authors,refetch}) => {
+const AddBook = ({authors,refetch,setBookDetail}) => {
     const [currentAuthorId,setCurrentAuthorId] = useState(null);
     const [addBook, { loading, error }] = useMutation(ADD_BOOK, {
         onCompleted: (data) => {
