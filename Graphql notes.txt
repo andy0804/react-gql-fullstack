@@ -1,0 +1,104 @@
+Installing Graphql (Node)
+-------------------------------------
+-install packages graphql, express-graphql
+- get the function from express-graphql
+const {graphqlHTTP} = require('express-graphql')
+- create a route and listen to it
+app.use('/graphql',graphqlHTTP({
+    
+}))
+
+Creating the Schema that explainst the relationship of our objects
+
+const BookType = new GraphQLObjectType({
+    name:'Book',
+    field:()=>({
+        id:{type:GraphQLString},
+        name:{type:GraphQLString},
+        genre:{type:GraphQLString}
+    })
+})
+
+CLIENT SIDE dependencies
+graphql,@apollo/react-hooks,apollo-boost
+const dbUrl = `mongodb+srv://ananth:ananth123@gq-ninja.mucnf.mongodb.net/gql-nina`
+
+
+
+Setup :
+import { ApolloProvider } from "@apollo/react-hooks";
+import ApolloClient from "apollo-boost";
+const client = new ApolloClient({
+  uri: "http://localhost:4000/graphql",
+});
+ReactDOM.render(
+  <ApolloProvider client={client}>
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+  </ApolloProvider>,
+  document.getElementById('root')
+);
+
+
+Writing queries
+
+Note: Return IDs whereever applicable.
+
+ export  const GET_BOOKS = gql`
+  {
+    books {
+      id
+      name
+      genre
+      author{
+        id  
+        name
+      }
+    }
+  }
+`;
+
+export const GET_AUTHORS = gql`
+{
+  authors {
+    id
+    name
+   
+  }
+}
+`;
+
+export const ADD_BOOK = gql`
+  mutation AddBook($name: String!, $genre: String!, $authorId: ID!){
+    addBook(name: $name, genre: $genre ,authorId:$authorId) {
+        id
+        name
+      }
+    
+  }
+`;
+
+export  const GET_BOOK_BY_ID = gql`
+query GetBook($id: ID){
+    book(id: $id) {
+        id
+        name
+        genre
+        author {
+            id
+            name
+            age
+            books {
+                id
+                name
+            }
+        }
+    }
+}
+`;
+
+
+useQuery : QUERY A LIST 
+useLazyQuery : When you want something to happen on an Event
+useMutation: When you want to update the store
